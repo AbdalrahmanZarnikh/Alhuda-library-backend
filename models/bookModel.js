@@ -12,9 +12,11 @@ const bookSchema = new mongoose.Schema(
     },
     quantity: {
       type: Number,
+      default: 0,
     },
     price: {
       type: Number,
+      default: 0,
     },
     images: [
       {
@@ -23,7 +25,7 @@ const bookSchema = new mongoose.Schema(
       },
     ],
     number: {
-      type: Number,
+      type: String,
       required: [true, "book number required"],
     },
     category: {
@@ -33,6 +35,11 @@ const bookSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+bookSchema.pre(/^find/, function (next) {
+  this.populate({ path: "category", select: "name" });
+  next();
+});
 
 const BookModel = mongoose.model("Book", bookSchema);
 

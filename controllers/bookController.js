@@ -42,9 +42,6 @@ const createBook = asyncHandler(async (req, res) => {
   if (req.images) {
     req.body.images = req.images;
   }
-  if (req.uploadedFiles) {
-    req.body.filePdf = req.uploadedFiles;
-  }
 
   const book = await BookModel.create(req.body);
   res.status(201).json({ status: "Success", data: book });
@@ -59,20 +56,15 @@ const updateBook = asyncHandler(async (req, res) => {
     req.body.images = req.images;
   }
 
-  if (req.files?.files) {
-    await RemoveMultipleFilesCloudinary(User, id); // حذف ملفات PDF القديمة
-    req.body.filePdf = req.uploadedFiles;
-  }
-
   const bookUpdated = await BookModel.findByIdAndUpdate(id, req.body, {
     new: true,
   });
 
   if (!bookUpdated) {
-    return res.status(404).json({ status: "Fail", message: "User not found" });
+    return res.status(404).json({ status: "Fail", message: "Book Not Found" });
   }
 
-  res.status(200).json({ status: "Success", data: bookUpdated });
+  return res.status(200).json({ status: "Updated", data: bookUpdated });
 });
 
 // ❌ Delete user

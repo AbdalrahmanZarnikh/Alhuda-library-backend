@@ -33,6 +33,12 @@ class ApiFeatures {
           { room: { $regex: this.queryString.keyword, $options: "i" } },
           { safar: { $regex: this.queryString.keyword, $options: "i" } },
         ];
+      }
+      if (modelName == "BookModel") {
+        query.$or = [
+          { title: { $regex: this.queryString.keyword, $options: "i" } },
+          { author: { $regex: this.queryString.keyword, $options: "i" } },
+        ];
       } else {
         query.$or = [
           { name: { $regex: this.queryString.keyword, $options: "i" } },
