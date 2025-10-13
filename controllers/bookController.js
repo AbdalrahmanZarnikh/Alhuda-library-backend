@@ -50,8 +50,9 @@ const createBook = asyncHandler(async (req, res) => {
 
   if (existBook) {
     existBook.quantity += +req.body.quantity;
-    existBook.price = +req.body.price;
-
+    if (req.body.price) {
+      existBook.price = +req.body.price;
+    }
     if (req.body.number) {
       const newStr = existBook.number
         ? existBook.number + "," + req.body.number
@@ -69,7 +70,9 @@ const createBook = asyncHandler(async (req, res) => {
     // تأكد من وجود number عند الإنشاء
     if (!req.body.number) req.body.number = "";
     else {
-      const numberWithoutRepetition = [...new Set(req.body.number.split(","))].join();
+      const numberWithoutRepetition = [
+        ...new Set(req.body.number.split(",")),
+      ].join();
 
       req.body.number = numberWithoutRepetition;
     }
