@@ -53,16 +53,26 @@ const createBook = asyncHandler(async (req, res) => {
     existBook.price = +req.body.price;
 
     if (req.body.number) {
-      existBook.number = existBook.number
+      const newStr = existBook.number
         ? existBook.number + "," + req.body.number
         : req.body.number;
+
+      const numberWithoutRepetition = [...new Set(newStr.split(","))].join();
+
+      existBook.number = numberWithoutRepetition;
     }
 
     await existBook.save();
+
     res.status(201).json({ status: "Success", data: existBook });
   } else {
     // تأكد من وجود number عند الإنشاء
     if (!req.body.number) req.body.number = "";
+    else {
+      const numberWithoutRepetition = [...new Set(req.body.number.split(","))].join();
+
+      req.body.number = numberWithoutRepetition;
+    }
     const book = await BookModel.create(req.body);
     res.status(201).json({ status: "Success", data: book });
   }
