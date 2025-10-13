@@ -43,7 +43,7 @@ const createBook = asyncHandler(async (req, res) => {
     req.body.images = req.images;
   }
 
-  const existBook = BookModel.findOne({ title: req.body.title });
+  const existBook = BookModel.findOne({ title: req.body.title ,category:req.body.category });
 
   if (existBook) {
     existBook.quantity += +req.body.quantity;
