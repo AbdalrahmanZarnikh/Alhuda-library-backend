@@ -43,8 +43,15 @@ const createBook = asyncHandler(async (req, res) => {
     req.body.images = req.images;
   }
 
-  const book = await BookModel.create(req.body);
-  res.status(201).json({ status: "Success", data: book });
+  const existBook = BookModel.findOne({ title: req.body.title });
+
+  if (existBook) {
+    existBook.quantity += +req.body.quantity;
+    res.status(201).json({ status: "Success", data: existBook });
+  } else {
+    const book = await BookModel.create(req.body);
+    res.status(201).json({ status: "Success", data: book });
+  }
 });
 
 // ✏️ Update book
