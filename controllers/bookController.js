@@ -50,6 +50,7 @@ const createBook = asyncHandler(async (req, res) => {
 
   if (existBook) {
     existBook.quantity += +req.body.quantity;
+    existBook.price = +req.body.price;
 
     if (req.body.number) {
       existBook.number = existBook.number
