@@ -47,6 +47,7 @@ const createBook = asyncHandler(async (req, res) => {
 
   if (existBook) {
     existBook.quantity += +req.body.quantity;
+    await existBook.save()
     res.status(201).json({ status: "Success", data: existBook });
   } else {
     const book = await BookModel.create(req.body);
