@@ -9,7 +9,7 @@ const {
 
 // 📥 Get all books
 
-exports.getBooks = asyncHandler(async (req, res) => {
+const getBooks = asyncHandler(async (req, res) => {
   const filter = {};
   if (req.query.category && req.query.category !== "الكل") {
     filter.category = req.query.category;
