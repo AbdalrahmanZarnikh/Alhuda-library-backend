@@ -98,6 +98,11 @@ const updateBook = asyncHandler(async (req, res) => {
     new: true,
   });
 
+
+  if(bookUpdated.quantity==0){
+    await BookModel.findByIdAndDelete(bookUpdated._id);
+  }
+
   if (!bookUpdated) {
     return res.status(404).json({ status: "Fail", message: "Book Not Found" });
   }
