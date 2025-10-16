@@ -8,24 +8,28 @@ const {
 } = require("../utils/Cloudinary");
 
 // 📥 Get all books
-const getBooks = asyncHandler(async (req, res) => {
-  const countDocuments = await BookModel.countDocuments();
 
-  const features = new ApiFeatures(BookModel.find({}), req.query)
-    .Filter()
-    .Search("BookModel")
-    .Paginate(countDocuments)
-    .LimitFields()
-    .Sort();
-
-  const { mongooseQuery, pagination } = features;
-  const books = await mongooseQuery;
-
-  if (!books) {
-    return next(new ApiError("Books not found!", 404));
+exports.getBooks = asyncHandler(async (req, res) => {
+  const filter = {};
+  if (req.query.category && req.query.category !== "الكل") {
+    filter.category = req.query.category;
   }
 
-  res.status(200).json({ status: "Success", pagination, data: books });
+  const booksQuery = BookModel.find(filter);
+  const count = await BookModel.countDocuments(filter);
+
+  const apiFeatures = new ApiFeatures(booksQuery, req.query)
+    .Filter()
+    .Paginate(count)
+    .Search("BookModel");
+
+  const books = await apiFeatures.mongooseQuery;
+
+  res.status(200).json({
+    status: "Success",
+    pagination: apiFeatures.pagination,
+    data: books,
+  });
 });
 
 // 📥 Get single book
