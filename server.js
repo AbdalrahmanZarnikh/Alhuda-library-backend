@@ -13,6 +13,7 @@ const ConnectDB=require("./DB/ConnectDB")
 
 const CategoryRoutes=require("./routes/categoryRoutes");
 const BookRoutes=require("./routes/bookRoutes");
+const CartRoutes=require("./routes/cartRoutes")
 
 
 
@@ -33,6 +34,7 @@ app.use(express.json());
 // routes
 app.use("/api/categories",CategoryRoutes);
 app.use("/api/books",BookRoutes);
+app.use("/api/cart",CartRoutes);
 
 
 // Error MiddleWare
