@@ -26,8 +26,9 @@ exports.addBookToCart = asyncHandler(async (req, res, next) => {
     });
   } else {
     const bookIndex = cart.cartItems.findIndex(
-      (item) => item.book.toString() === bookId
+      (item) => item.book._id.toString() === bookId
     );
+
 
     if (bookIndex > -1) {
       cart.cartItems[bookIndex].quantity =
